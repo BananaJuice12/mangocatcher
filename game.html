@@ -47,19 +47,18 @@
 	
 	<script>
 		let basket = document.getElementById("basket");
-		let position = (window.innerWidth - basket.offsetWidth) / 2;
+		let mango = document.getElementById("mango");
+		let scoreText = document.getElementById("score");
 		
 		let moveRight = false;
 		let moveLeft = false;
 		
 		let maxPosition = window.innerWidth - basket.offsetWidth;
+		let position = (window.innerWidth - basket.offsetWidth) / 2;
+		
 		let speed = 10;
-		
-		let mango = document.getElementById("mango");
 		let fallSpeed = 5;
-		
 		let score = 0;
-		let scoreText = document.getElementById("score");
 		
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
@@ -115,7 +114,7 @@
 				mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 			}
 			
-			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight) {
+			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight + 40) {
 				
 				if (mangoX + mango.offsetWidth >= position && mangoX <= position + basket.offsetWidth) 
 				{
