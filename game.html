@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Game</title>
+	
+	<style>
+			
+		body {
+			background-image: url("MangoBackground.png");
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+		
+		#basket {
+			width: 200px;
+			position: absolute;
+			bottom: 1px;
+		}
+		
+		#mango {
+			width: 80px;
+			position: absolute;
+			top: 0px;
+			left: 300px;
+		}
+		
+		#score {
+			position: absolute;
+			top: 30px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 30px;
+			font-family: Trebuchet MS;
+		}
+			
+	</style>
+	
+</head>
+<body>
+	
+	<p id="score">Score: 0</p>
+	
+	<img src="MangoBasket.png" id="basket">
+	<img src="mango.png" id="mango">
+	
+	<script>
+		let basket = document.getElementById("basket");
+		let position = (window.innerWidth - basket.offsetWidth) / 2;
+		
+		let moveRight = false;
+		let moveLeft = false;
+		
+		let maxPosition = window.innerWidth - basket.offsetWidth;
+		let speed = 10;
+		
+		let mango = document.getElementById("mango");
+		let fallSpeed = 5;
+		
+		let score = 0;
+		let scoreText = document.getElementById("score");
+		
+		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
+		let mangoY = 0;
+		
+		basket.style.left = position + "px";
+		
+		document.addEventListener("keydown", function(event) {
+			if (event.key === "ArrowRight") {
+				moveRight = true;
+			}
+			
+			if (event.key === "ArrowLeft") {
+				moveLeft = true;
+			}
+			});
+			
+			document.addEventListener("keyup", function(event) {
+				if (event.key === "ArrowRight") {
+					moveRight = false;
+				}
+				
+				if (event.key === "ArrowLeft") {
+					moveLeft = false;
+				}
+			});
+		
+		function gameLoop() {
+			if (moveRight) {
+				position += speed;
+			}
+			
+			if (moveLeft) {
+				position -= speed;
+			}
+				
+			if (position < 0) {
+				position = 0;
+			}
+			
+			if (position > maxPosition) {
+				position = maxPosition;
+			}
+			
+			basket.style.left = position + "px";
+			
+			mangoY += fallSpeed;
+			
+			mango.style.left = mangoX + "px";
+			mango.style.top = mangoY + "px";
+			
+			if (mangoY > window.innerHeight) {
+				mangoY = 0;
+				mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
+			}
+			
+			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight) {
+				
+				if (mangoX + mango.offsetWidth >= position && mangoX <= position + basket.offsetWidth) 
+				{
+					mangoY = 0;
+					mangoX = Math.random() * (window.innerWidth - mango.offsetWidth)
+					
+					score++;
+					scoreText.textContent = "Score: " + score;
+					
+					speed+= 0.1;
+					fallSpeed+= 0.1;
+					
+					console.log("Score:", score);
+				}
+			}
+			
+			requestAnimationFrame(gameLoop);
+		}
+		
+		requestAnimationFrame(gameLoop);
+	</script>
+	
+</body>
+</html>
