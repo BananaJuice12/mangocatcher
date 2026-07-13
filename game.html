@@ -34,6 +34,15 @@
 			font-size: 30px;
 			font-family: Trebuchet MS;
 		}
+		
+		#highScore {
+			position: absolute;
+			top: 70px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 30px;
+			font-family: Trebuchet MS;
+		}
 			
 	</style>
 	
@@ -41,6 +50,7 @@
 <body>
 	
 	<p id="score">Score: 0</p>
+	<p id="highScore">High Score: 0</p>
 	
 	<img src="MangoBasket.png" id="basket">
 	<img src="mango.png" id="mango">
@@ -49,6 +59,7 @@
 		let basket = document.getElementById("basket");
 		let mango = document.getElementById("mango");
 		let scoreText = document.getElementById("score");
+		let highScore = document.getElementById("highScore");
 		
 		let moveRight = false;
 		let moveLeft = false;
@@ -59,6 +70,7 @@
 		let speed = 10;
 		let fallSpeed = 5;
 		let score = 0;
+		let highScore = 0;
 		
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
@@ -123,6 +135,11 @@
 					
 					score++;
 					scoreText.textContent = "Score: " + score;
+					
+					if (score > highScore) {
+						highScore = score;
+						highScoreText.textContent = "High Score" + highScore;
+					}
 					
 					console.log("Score:", score);
 				}
