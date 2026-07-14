@@ -73,7 +73,7 @@
 	
 	<p id="score">Score: 0</p>
 	<p id="highScore">High Score: 0</p>
-	<p id="lives">Lives: 3</p>
+	<p id="lives"> &#10084;&#65039;  &#10084;&#65039;  &#10084;&#65039;</p>
 	
 	<div id="gameOver">
 		<h1 style="color:red;">GAME OVER</h1>
@@ -85,7 +85,9 @@
 	<img src="mango.png" id="mango">
 	
 	<script>
+		// ====================
 		// HTML elements
+		// ====================
 		let basket = document.getElementById("basket");
 		let mango = document.getElementById("mango");
 		let scoreText = document.getElementById("score");
@@ -94,7 +96,9 @@
 		let gameOverScreen = document.getElementById("gameOver");
 		let finalScore = document.getElementById("finalScore");
 		
+		// ====================
 		// Player movement
+		// ====================
 		let moveRight = false;
 		let moveLeft = false;
 		
@@ -102,22 +106,33 @@
 		let maxPosition = window.innerWidth - basket.offsetWidth;
 		let speed = 10;
 		
+		// ====================
 		// Mango movement
+		// ====================
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
 		let fallSpeed = 5;
 		
+		// ====================
 		// Score system
+		// ====================
 		let score = 0;
 		let highScore = 0;
 		
+		// ====================
 		// Lives system
+		// ====================
 		let lives = 3;
 		let gameRunning = true;
+		let hearts = "";
 		
+		// ====================
 		// Basket collision area
+		// ====================
 		let catchLeft;
 		let catchRight;
+		let basketPadding = 70;
+		let catchHeight = 120;
 		
 		basket.style.left = position + "px";
 		
@@ -162,17 +177,37 @@
 			position = (window.innerWidth - basket.offsetWidth) / 2;
 			basket.style.left = position + "px";
 			
-			mangoY = 0;
-			mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
-			
-			mango.style.left = mangoX + "px";
-			mango.style.top = mangoY + "px";
+			resetMango();
 			
 			gameOverScreen.style.display = "none";
 			
 			gameRunning = true;
 			
 			requestAnimationFrame(gameLoop);
+		}
+		
+		function resetMango() {
+			mangoY = 0;
+			mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
+			
+			mango.style.left = mangoX + "px";
+			mango.style.top = mangoY + "px";
+		}
+		
+		function gameOver() {
+			finalScore.textContent = "Final Score: " + score;
+			gameOverScreen.style.display = "block";
+			gameRunning = false;
+		}
+		
+		function updateLives() {
+			hearts = "";
+			
+			for (let i = 0; i < lives; i++) {
+				hearts += "&#10084;&#65039 ";
+			}
+			
+			livesText.textContent = hearts;
 		}
 		
 		function gameLoop() {
@@ -198,8 +233,8 @@
 			
 			basket.style.left = position + "px";
 			
-			catchLeft = position + 70;
-			catchRight = position + basket.offsetWidth - 70;
+			catchLeft = position + basketPadding;
+			catchRight = position + basket.offsetWidth - basketPadding;
 			
 			mangoY += fallSpeed;
 			
@@ -208,25 +243,21 @@
 			
 			if (mangoY > window.innerHeight) 
 			{
-				mangoY = 0;
-				mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
+				resetMango();
 				
 				lives--;
 				livesText.textContent = "Lives: " + lives;
 				
 				if (lives <= 0) {
-					finalScore.textContent = "Final Score: " + score;
-					gameOverScreen.style.display = "block";
-					gameRunning = false;
+					gameOver();
 				}
 			}
 			
-			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight + 120) {
+			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight + catchHeight) {
 				
 				if (mangoX + mango.offsetWidth >= catchLeft && mangoX <= catchRight) 
 				{
-					mangoY = 0;
-					mangoX = Math.random() * (window.innerWidth - mango.offsetWidth)
+					resetMango();
 					
 					score++;
 					scoreText.textContent = "Score: " + score;
