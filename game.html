@@ -109,7 +109,7 @@
 		
 		// Score system
 		let score = 0;
-		let highScore = 0
+		let highScore = 0;
 		
 		// Lives system
 		let lives = 3;
@@ -130,7 +130,7 @@
 				moveLeft = true;
 			}
 			
-			if (event.key === " ") {
+			if (event.key === " " && !gameRunning) {
 				restartGame();
 			}
 		});
@@ -149,8 +149,15 @@
 			score = 0;
 			lives = 3;
 			
+			moveLeft = false;
+			moveRight = false;
+			
+			speed = 10;
+			fallSpeed = 5;
+			
 			scoreText.textContent = "Score: " + score;
 			livesText.textContent = "Lives: " + lives;
+			highScoreText.textContent = "High Score: " + highScore;
 			
 			position = (window.innerWidth - basket.offsetWidth) / 2;
 			basket.style.left = position + "px";
@@ -158,11 +165,14 @@
 			mangoY = 0;
 			mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 			
+			mango.style.left = mangoX + "px";
+			mango.style.top = mangoY + "px";
+			
 			gameOverScreen.style.display = "none";
 			
 			gameRunning = true;
 			
-			requestAnimationFram(gameLoop);
+			requestAnimationFrame(gameLoop);
 		}
 		
 		function gameLoop() {
