@@ -204,13 +204,21 @@
 		}
 		
 		function updateLives() {
-			hearts = "";
-			
-			for (let i = 0; i < lives; i++) {
-				hearts += "❤️ ";
+			if (lives === 3) {
+				livesText.textContent = "❤️ ❤️ ❤️";
 			}
 			
-			livesText.textContent = hearts;
+			if (lives === 2) {
+				livesText.textContent = "❤️ ❤️";
+			}
+			
+			if (lives === 1) {
+				livesText.textContent = "❤️";
+			}
+			
+			if (lives === 0) {
+				livesText.textContent = "";
+			}
 		}
 		
 		function gameLoop() {
