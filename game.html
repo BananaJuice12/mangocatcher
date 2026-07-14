@@ -85,6 +85,7 @@
 	<img src="mango.png" id="mango">
 	
 	<script>
+		// HTML elements
 		let basket = document.getElementById("basket");
 		let mango = document.getElementById("mango");
 		let scoreText = document.getElementById("score");
@@ -93,25 +94,29 @@
 		let gameOverScreen = document.getElementById("gameOver");
 		let finalScore = document.getElementById("finalScore");
 		
+		// Player movement
 		let moveRight = false;
 		let moveLeft = false;
 		
-		let catchLeft = position + 30;
-		let catchRight = position + basket.offsetWidth - 30;
-		
-		let maxPosition = window.innerWidth - basket.offsetWidth;
 		let position = (window.innerWidth - basket.offsetWidth) / 2;
-		
+		let maxPosition = window.innerWidth - basket.offsetWidth;
 		let speed = 10;
-		let fallSpeed = 5;
 		
-		let score = 0;
-		let highScore = 0;
-		
-		let lives = 3;
-		
+		// Mango movement
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
+		let fallSpeed = 5;
+		
+		// Score system
+		let score = 0;
+		let highScore = 0
+		
+		// Lives system
+		let lives = 3;
+		
+		// Basket collision area
+		let catchLeft;
+		let catchRight;
 		
 		basket.style.left = position + "px";
 		
@@ -153,6 +158,9 @@
 			}
 			
 			basket.style.left = position + "px";
+			
+			catchLeft = position + 30;
+			catchRight = position + basket.offsetWidth - 30;
 			
 			mangoY += fallSpeed;
 			
