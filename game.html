@@ -52,6 +52,18 @@
 			font-size: 30px;
 			font-family: Trebuchet MS;
 		}
+		
+		#gameOver {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-50%);
+			text-align: center;
+			font-family: Trebuchet MS;
+			font-size: 30px;
+			color: white;
+			display: none;
+		}
 			
 	</style>
 	
@@ -62,6 +74,11 @@
 	<p id="highScore">High Score: 0</p>
 	<p id="lives">Lives: 3</p>
 	
+	<div id="gameOver">
+		<h1>GAME OVER</h1>
+		<p id="finalScore"></p>
+		<p>Press SPACE to Restart</p>
+	
 	<img src="MangoBasket.png" id="basket">
 	<img src="mango.png" id="mango">
 	
@@ -71,6 +88,8 @@
 		let scoreText = document.getElementById("score");
 		let highScoreText = document.getElementById("highScore");
 		let livesText = document.getElementById("lives");
+		let gameOverScreen = document.getElementById("gameOver");
+		let finalScore = document.getElementById("finalScore");
 		
 		let moveRight = false;
 		let moveLeft = false;
@@ -101,14 +120,14 @@
 			}
 			});
 			
-			document.addEventListener("keyup", function(event) {
-				if (event.key === "ArrowRight") {
+		document.addEventListener("keyup", function(event) {
+			if (event.key === "ArrowRight") {
 					moveRight = false;
-				}
+			}
 				
-				if (event.key === "ArrowLeft") {
+			if (event.key === "ArrowLeft") {
 					moveLeft = false;
-				}
+			}
 			});
 		
 		function gameLoop() {
@@ -144,7 +163,8 @@
 				livesText.textContent = "Lives: " + lives;
 				
 				if (lives <= 0) {
-					alert("Game Over!");
+					finalScore.textContent = "Final Score: " + score;
+					gameOverScreen.style.display = "block";
 					return;
 				}
 			}
