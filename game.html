@@ -96,6 +96,9 @@
 		let moveRight = false;
 		let moveLeft = false;
 		
+		let catchLeft = position + 30;
+		let catchRight = position + basket.offsetWidth - 30;
+		
 		let maxPosition = window.innerWidth - basket.offsetWidth;
 		let position = (window.innerWidth - basket.offsetWidth) / 2;
 		
@@ -173,7 +176,7 @@
 			
 			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight + 120) {
 				
-				if (mangoX + mango.offsetWidth >= position && mangoX <= position + basket.offsetWidth) 
+				if (mangoX + mango.offsetWidth >= catchLeft && mangoX <= catchRight) 
 				{
 					mangoY = 0;
 					mangoX = Math.random() * (window.innerWidth - mango.offsetWidth)
