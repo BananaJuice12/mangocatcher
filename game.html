@@ -113,6 +113,7 @@
 		
 		// Lives system
 		let lives = 3;
+		let gameRunning = true;
 		
 		// Basket collision area
 		let catchLeft;
@@ -128,7 +129,11 @@
 			if (event.key === "ArrowLeft") {
 				moveLeft = true;
 			}
-			});
+			
+			if (event.key === " ") {
+				restartGame();
+			}
+		});
 			
 		document.addEventListener("keyup", function(event) {
 			if (event.key === "ArrowRight") {
@@ -138,9 +143,33 @@
 			if (event.key === "ArrowLeft") {
 					moveLeft = false;
 			}
-			});
+		});
+		
+		function restartGame() {
+			score = 0;
+			lives = 3;
+			
+			scoreText.textContent = "Score: " + score;
+			livesText.textContent = "Lives: " + lives;
+			
+			position = (window.innerWidth - basket.offsetWidth) / 2;
+			basket.style.left = position + "px";
+			
+			mangoY = 0;
+			mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
+			
+			gameOverScreen.style.display = "none";
+			
+			gameRunning = true;
+			
+			requestAnimationFram(gameLoop);
+		}
 		
 		function gameLoop() {
+			if (!gameRunning) {
+				return;
+			}
+			
 			if (moveRight) {
 				position += speed;
 			}
@@ -178,7 +207,7 @@
 				if (lives <= 0) {
 					finalScore.textContent = "Final Score: " + score;
 					gameOverScreen.style.display = "block";
-					return;
+					gameRunning = false;
 				}
 			}
 			
