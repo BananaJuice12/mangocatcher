@@ -73,7 +73,7 @@
 	
 	<p id="score">Score: 0</p>
 	<p id="highScore">High Score: 0</p>
-	<p id="lives"> &#10084;&#65039;  &#10084;&#65039;  &#10084;&#65039;</p>
+	<p id="lives"></p>
 	
 	<div id="gameOver">
 		<h1 style="color:red;">GAME OVER</h1>
@@ -163,6 +163,7 @@
 		function restartGame() {
 			score = 0;
 			lives = 3;
+			hearts = "";
 			
 			moveLeft = false;
 			moveRight = false;
@@ -171,8 +172,8 @@
 			fallSpeed = 5;
 			
 			scoreText.textContent = "Score: " + score;
-			livesText.textContent = "Lives: " + lives;
 			highScoreText.textContent = "High Score: " + highScore;
+			updateLives();
 			
 			position = (window.innerWidth - basket.offsetWidth) / 2;
 			basket.style.left = position + "px";
@@ -180,6 +181,7 @@
 			resetMango();
 			
 			gameOverScreen.style.display = "none";
+			mango.style.display = "block";
 			
 			gameRunning = true;
 			
@@ -197,6 +199,7 @@
 		function gameOver() {
 			finalScore.textContent = "Final Score: " + score;
 			gameOverScreen.style.display = "block";
+			mango.style.display = "none";
 			gameRunning = false;
 		}
 		
@@ -204,7 +207,7 @@
 			hearts = "";
 			
 			for (let i = 0; i < lives; i++) {
-				hearts += "&#10084;&#65039 ";
+				hearts += "&#10084;&#65039; ";
 			}
 			
 			livesText.textContent = hearts;
@@ -246,7 +249,7 @@
 				resetMango();
 				
 				lives--;
-				livesText.textContent = "Lives: " + lives;
+				updateLives();
 				
 				if (lives <= 0) {
 					gameOver();
@@ -266,14 +269,13 @@
 						highScore = score;
 						highScoreText.textContent = "High Score: " + highScore;
 					}
-					
-					console.log("Score:", score);
 				}
 			}
 			
 			requestAnimationFrame(gameLoop);
 		}
 		
+		updateLives();
 		requestAnimationFrame(gameLoop);
 	</script>
 	
