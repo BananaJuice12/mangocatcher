@@ -135,9 +135,18 @@
 			mango.style.left = mangoX + "px";
 			mango.style.top = mangoY + "px";
 			
-			if (mangoY > window.innerHeight) {
+			if (mangoY > window.innerHeight) 
+			{
 				mangoY = 0;
 				mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
+				
+				lives--;
+				livesText.textContent = "Lives" + lives;
+				
+				if (lives <= 0) {
+					alert("Game Over!");
+					return;
+				}
 			}
 			
 			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight + 120) {
