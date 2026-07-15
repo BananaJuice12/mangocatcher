@@ -102,7 +102,7 @@
 		let moveRight = false;
 		let moveLeft = false;
 		
-		let position = (window.innerWidth - basket.offsetWidth) / 2;
+		let basketPosition = (window.innerWidth - basket.offsetWidth) / 2;
 		let maxPosition = window.innerWidth - basket.offsetWidth;
 		let speed = 10;
 		
@@ -124,7 +124,6 @@
 		// ====================
 		let lives = 3;
 		let gameRunning = true;
-		let hearts = "";
 		
 		// ====================
 		// Basket collision area
@@ -134,7 +133,7 @@
 		let basketPadding = 70;
 		let catchHeight = 120;
 		
-		basket.style.left = position + "px";
+		basket.style.left = basketPosition + "px";
 		
 		document.addEventListener("keydown", function(event) {
 			if (event.key === "ArrowRight") {
@@ -160,10 +159,12 @@
 			}
 		});
 		
+		// ====================
+		// Game Functions
+		// ====================
 		function restartGame() {
 			score = 0;
 			lives = 3;
-			hearts = "";
 			
 			moveLeft = false;
 			moveRight = false;
@@ -175,8 +176,8 @@
 			highScoreText.textContent = "High Score: " + highScore;
 			updateLives();
 			
-			position = (window.innerWidth - basket.offsetWidth) / 2;
-			basket.style.left = position + "px";
+			basketPosition = (window.innerWidth - basket.offsetWidth) / 2;
+			basket.style.left = basketPosition + "px";
 			
 			resetMango();
 			
@@ -188,6 +189,16 @@
 			requestAnimationFrame(gameLoop);
 		}
 		
+		function gameOver() {
+			finalScore.textContent = "Final Score: " + score;
+			gameOverScreen.style.display = "block";
+			mango.style.display = "none";
+			gameRunning = false;
+		}
+		
+		// ====================
+		// Mango Movement
+		// ====================
 		function resetMango() {
 			mangoY = 0;
 			mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
@@ -196,13 +207,9 @@
 			mango.style.top = mangoY + "px";
 		}
 		
-		function gameOver() {
-			finalScore.textContent = "Final Score: " + score;
-			gameOverScreen.style.display = "block";
-			mango.style.display = "none";
-			gameRunning = false;
-		}
-		
+		// ====================
+		// Lives Display
+		// ====================
 		function updateLives() {
 			if (lives === 3) {
 				livesText.textContent = "❤️ ❤️ ❤️";
@@ -221,31 +228,34 @@
 			}
 		}
 		
+		// ====================
+		// Main Game Loop
+		// ====================
 		function gameLoop() {
 			if (!gameRunning) {
 				return;
 			}
 			
 			if (moveRight) {
-				position += speed;
+				basketPosition += speed;
 			}
 			
 			if (moveLeft) {
-				position -= speed;
+				basketPosition -= speed;
 			}
 				
-			if (position < 0) {
-				position = 0;
+			if (basketPosition < 0) {
+				basketPosition = 0;
 			}
 			
-			if (position > maxPosition) {
-				position = maxPosition;
+			if (basketPosition > maxPosition) {
+				basketPosition = maxPosition;
 			}
 			
-			basket.style.left = position + "px";
+			basket.style.left = basketPosition + "px";
 			
-			catchLeft = position + basketPadding;
-			catchRight = position + basket.offsetWidth - basketPadding;
+			catchLeft = basketPosition + basketPadding;
+			catchRight = basketPosition + basket.offsetWidth - basketPadding;
 			
 			mangoY += fallSpeed;
 			
@@ -283,6 +293,9 @@
 			requestAnimationFrame(gameLoop);
 		}
 		
+		// ====================
+		// Start Game
+		// ====================
 		updateLives();
 		requestAnimationFrame(gameLoop);
 	</script>
