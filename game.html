@@ -28,7 +28,7 @@
 			left: 300px;
 		}
 		
-		#score {
+		#level {
 			position: absolute;
 			top: 30px;
 			left: 50%;
@@ -37,7 +37,7 @@
 			font-family: Trebuchet MS;
 		}
 		
-		#highScore {
+		#score {
 			position: absolute;
 			top: 70px;
 			left: 50%;
@@ -46,9 +46,18 @@
 			font-family: Trebuchet MS;
 		}
 		
-		#lives {
+		#highScore {
 			position: absolute;
 			top: 110px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 30px;
+			font-family: Trebuchet MS;
+		}
+		
+		#lives {
+			position: absolute;
+			top: 150px;
 			left: 50%;
 			transform: translateX(-50%);
 			font-size: 30px;
@@ -82,6 +91,7 @@
 </head>
 <body>
 	
+	<p id="level">Level: 1</p>
 	<p id="score">Score: 0</p>
 	<p id="highScore">High Score: 0</p>
 	<p id="lives"></p>
@@ -108,6 +118,7 @@
 		let scoreText = document.getElementById("score");
 		let highScoreText = document.getElementById("highScore");
 		let livesText = document.getElementById("lives");
+		let levelText = document.getElementById("level");
 		let gameOverScreen = document.getElementById("gameOver");
 		let finalScore = document.getElementById("finalScore");
 		let levelCompleteScreen = document.getElementById("levelComplete");
@@ -127,7 +138,6 @@
 		// ====================
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
-		let fallSpeed = 5;
 		
 		// ====================
 		// Score system
@@ -190,12 +200,13 @@
 		function restartGame() {
 			score = 0;
 			lives = 3;
+			level = 1;
+			
+			setupLevel();
+			updateLevel();
 			
 			moveLeft = false;
 			moveRight = false;
-			
-			speed = 10;
-			fallSpeed = 5;
 			
 			scoreText.textContent = "Score: " + score;
 			highScoreText.textContent = "High Score: " + highScore;
@@ -222,6 +233,29 @@
 			gameRunning = false;
 		}
 		
+		// ====================
+		// Levels
+		// ====================
+		function setupLevel() {
+			if (level === 1) {
+				fallSpeed = 5;
+				speed = 10;
+				levelGoal = 20;
+			}
+			
+			if (level === 2) {
+				fallSpeed = 7;
+				speed = 12;
+				levelGoal = 25;
+			}
+			
+			if (level === 3) {
+				fallSpeed = 9;
+				speed = 14;
+				levelGoal = 30;
+			}
+		}
+		
 		function levelComplete() {
 			levelCompleteScreen.style.display = "block";
 			mango.style.display = "none";
@@ -229,7 +263,25 @@
 		}
 		
 		function nextLevel() {
+			level++;
 			
+			setupLevel();
+			updateLevel();
+			
+			score = 0;
+			scoreText.textContent = "Score: " + score;
+			
+			levelCompleteScreen.style.display = "none";
+			
+			mango.style.display = "block";
+			resetMango();
+			
+			gameRunning = true;
+			requestAnimationFrame(gameLoop);
+		}
+		
+		function updateLevel() {
+			levelText.textContent = "Level: " + level;
 		}
 		
 		// ====================
@@ -339,6 +391,8 @@
 		// ====================
 		// Start Game
 		// ====================
+		setupLevel();
+		updateLevel();
 		updateLives();
 		requestAnimationFrame(gameLoop);
 	</script>
