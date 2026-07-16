@@ -204,7 +204,6 @@
 			
 			score = 0;
 			lives = 3;
-			level = 1;
 			
 			setupLevel();
 			updateLevel();
@@ -212,8 +211,7 @@
 			moveLeft = false;
 			moveRight = false;
 			
-			scoreText.textContent = "Score: " + score;
-			highScoreText.textContent = "High Score: " + highScore;
+			updateScore();
 			updateLives();
 			
 			basketPosition = (window.innerWidth - basket.offsetWidth) / 2;
@@ -250,13 +248,13 @@
 				levelGoal = 20;
 			}
 			
-			if (level === 2) {
+			else if (level === 2) {
 				fallSpeed = 7;
 				speed = 12;
 				levelGoal = 25;
 			}
 			
-			if (level === 3) {
+			else if (level === 3) {
 				fallSpeed = 9;
 				speed = 14;
 				levelGoal = 30;
@@ -279,11 +277,11 @@
 			lives = 3;
 			updateLives();
 			
+			score = 0;
+			
 			setupLevel();
 			updateLevel();
-			
-			score = 0;
-			scoreText.textContent = "Score: " + score;
+			updateScore();
 			
 			levelCompleteScreen.style.display = "none";
 			
@@ -296,6 +294,14 @@
 		
 		function updateLevel() {
 			levelText.textContent = "Level: " + level;
+		}
+		
+		// ====================
+		// Score
+		// ====================
+		function updateScore() {
+			scoreText.textContent = "Score: " + score;
+			highScoreText.textContent = "High Score: " + highScore;
 		}
 		
 		// ====================
@@ -383,19 +389,19 @@
 					resetMango();
 					
 					score++;
-					scoreText.textContent = "Score: " + score;
 					
 					// ====================
 					// Level completion
 					// ====================
+					if (score > highScore) {
+						highScore = score;
+					}
+					
+					updateScore();
+					
 					if (score >= levelGoal) {
 						levelComplete();
 						return;
-					}
-					
-					if (score > highScore) {
-						highScore = score;
-						highScoreText.textContent = "High Score: " + highScore;
 					}
 				}
 			}
@@ -406,6 +412,7 @@
 		// ====================
 		// Start Game
 		// ====================
+		updateScore();
 		setupLevel();
 		updateLevel();
 		updateLives();
