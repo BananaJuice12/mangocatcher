@@ -138,6 +138,7 @@
 		// ====================
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
+		let fallSpeed = 5;
 		
 		// ====================
 		// Score system
@@ -152,6 +153,7 @@
 		// ====================
 		let lives = 3;
 		let gameRunning = true;
+		let levelFinished = false;
 		
 		// ====================
 		// Basket collision area
@@ -175,11 +177,11 @@
 				moveLeft = true;
 			}
 			
-			if (event.key === "Enter" && !gameRunning) {
+			if (event.key === "Enter" && !gameRunning && !levelFinished) {
 				restartGame();
 			}
 			
-			if (event.key === " " && !gameRunning) {
+			if (event.key === " " && levelFinished) {
 				nextLevel();
 			}
 		});
@@ -198,6 +200,8 @@
 		// Game Functions
 		// ====================
 		function restartGame() {
+			levelFinished = false;
+			
 			score = 0;
 			lives = 3;
 			level = 1;
@@ -227,9 +231,12 @@
 		}
 		
 		function gameOver() {
+			levelFinished = false;
+			
 			finalScore.textContent = "Final Score: " + score;
 			gameOverScreen.style.display = "block";
 			mango.style.display = "none";
+			
 			gameRunning = false;
 		}
 		
@@ -257,13 +264,20 @@
 		}
 		
 		function levelComplete() {
+			levelFinished = true;
+			
 			levelCompleteScreen.style.display = "block";
 			mango.style.display = "none";
 			gameRunning = false;
 		}
 		
 		function nextLevel() {
+			levelFinished = false;
+			
 			level++;
+			
+			lives = 3;
+			updateLives();
 			
 			setupLevel();
 			updateLevel();
@@ -376,6 +390,7 @@
 					// ====================
 					if (score >= levelGoal) {
 						levelComplete();
+						return;
 					}
 					
 					if (score > highScore) {
