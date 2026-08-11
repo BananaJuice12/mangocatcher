@@ -86,6 +86,17 @@
 			display: none;
 		}
 		
+		#gameWon {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			font-family: Trebuchet MS;
+			font-size: 30px;
+			display: none;
+		}
+		
 	</style>
 	
 </head>
@@ -105,6 +116,11 @@
 		<h1 style="color:MediumSeaGreen;">Level Complete!</h1>
 		<p>Press <span style="color:green;">Space</span> to continue</p>
 	</div>
+	<div id="gameWon">
+		<h1 style="color:gold;">You Win!</h1>
+		<p>Congratulations! You have completed all the levels!</p>
+		<p>Press <span style="color:green;">Enter</span> to Restart</p>
+	</div>
 	
 	<img src="MangoBasket.png" id="basket">
 	<img src="mango.png" id="mango">
@@ -122,6 +138,7 @@
 		let gameOverScreen = document.getElementById("gameOver");
 		let finalScore = document.getElementById("finalScore");
 		let levelCompleteScreen = document.getElementById("levelComplete");
+		let gameWonScreen = document.getElementById("gameWon");
 		
 		// ====================
 		// Player movement
@@ -146,6 +163,7 @@
 		let score = 0;
 		let highScore = 0;
 		let level = 1;
+		let maxLevel = 10;
 		let levelGoal = 20;
 		
 		// ====================
@@ -221,6 +239,7 @@
 			
 			gameOverScreen.style.display = "none";
 			levelCompleteScreen.style.display = "none";
+			gameWonScreen.style.display = "none";
 			mango.style.display = "block";
 			
 			gameRunning = true;
@@ -236,6 +255,14 @@
 			mango.style.display = "none";
 			
 			gameRunning = false;
+		}
+		
+		function gameWon() {
+			gameRunning = false;
+			levelFinished = false;
+			
+			gameWonScreen.style.display = "block";
+			mango.style.display = "none";
 		}
 		
 		// ====================
@@ -259,6 +286,48 @@
 				speed = 14;
 				levelGoal = 30;
 			}
+			
+			else if (level === 4) {
+				fallSpeed = 9;
+				speed = 16;
+				levelGoal = 35;
+			}
+			
+			else if (level === 5) {
+				fallSpeed = 9;
+				speed = 18;
+				levelGoal = 40;
+			}
+			
+			else if (level === 6) {
+				fallSpeed = 9;
+				speed = 20;
+				levelGoal = 45;
+			}
+			
+			else if (level === 7) {
+				fallSpeed = 9;
+				speed = 22;
+				levelGoal = 50;
+			}
+			
+			else if (level === 8) {
+				fallSpeed = 9;
+				speed = 24;
+				levelGoal = 55;
+			}
+			
+			else if (level === 9) {
+				fallSpeed = 9;
+				speed = 26;
+				levelGoal = 60;
+			}
+			
+			else if (level === 10) {
+				fallSpeed = 9;
+				speed = 28;
+				levelGoal = 65;
+			}
 		}
 		
 		function levelComplete() {
@@ -270,6 +339,11 @@
 		}
 		
 		function nextLevel() {
+			if (level >= maxLevel) {
+				gameWon();
+				return;
+			}
+			
 			levelFinished = false;
 			
 			level++;
