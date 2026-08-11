@@ -46,15 +46,6 @@
 			font-family: Trebuchet MS;
 		}
 		
-		#highScore {
-			position: absolute;
-			top: 110px;
-			left: 50%;
-			transform: translateX(-50%);
-			font-size: 30px;
-			font-family: Trebuchet MS;
-		}
-		
 		#lives {
 			position: absolute;
 			top: 150px;
@@ -104,7 +95,6 @@
 	
 	<p id="level">Level: 1</p>
 	<p id="score">Score: 0</p>
-	<p id="highScore">High Score: 0</p>
 	<p id="lives"></p>
 	
 	<div id="gameOver">
@@ -132,7 +122,6 @@
 		let basket = document.getElementById("basket");
 		let mango = document.getElementById("mango");
 		let scoreText = document.getElementById("score");
-		let highScoreText = document.getElementById("highScore");
 		let livesText = document.getElementById("lives");
 		let levelText = document.getElementById("level");
 		let gameOverScreen = document.getElementById("gameOver");
@@ -161,7 +150,6 @@
 		// Score system
 		// ====================
 		let score = 0;
-		let highScore = 0;
 		let level = 1;
 		let maxLevel = 10;
 		let levelGoal = 20;
@@ -375,7 +363,6 @@
 		// ====================
 		function updateScore() {
 			scoreText.textContent = "Score: " + score;
-			highScoreText.textContent = "High Score: " + highScore;
 		}
 		
 		// ====================
@@ -467,10 +454,6 @@
 					// ====================
 					// Level completion
 					// ====================
-					if (score > highScore) {
-						highScore = score;
-					}
-					
 					updateScore();
 					
 					if (score >= levelGoal) {
