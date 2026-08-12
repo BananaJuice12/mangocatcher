@@ -157,6 +157,12 @@
 		let fallSpeed = 5;
 		
 		// ====================
+		// Coconut movement
+		// ====================
+		let coconutX = Math.random() * (window.innerWidth - coconut.offsetWidth);
+		let coconutY = -300;
+		
+		// ====================
 		// Score system
 		// ====================
 		let score = 0;
@@ -234,6 +240,7 @@
 			basket.style.left = basketPosition + "px";
 			
 			resetMango();
+			resetCoconut();
 			
 			gameOverScreen.style.display = "none";
 			levelCompleteScreen.style.display = "none";
@@ -251,6 +258,7 @@
 			finalScore.textContent = "Final Score: " + score;
 			gameOverScreen.style.display = "block";
 			mango.style.display = "none";
+			coconut.style.display = "none";
 			
 			gameRunning = false;
 		}
@@ -261,6 +269,7 @@
 			
 			gameWonScreen.style.display = "block";
 			mango.style.display = "none";
+			coconut.style.display = "none";
 		}
 		
 		// ====================
@@ -272,13 +281,13 @@
 			if (level === 1) {
 				fallSpeed = 5;
 				speed = 10;
-				levelGoal = 20;
+				levelGoal = 15;
 			}
 			
 			else if (level === 2) {
 				fallSpeed = 7;
 				speed = 12;
-				levelGoal = 25;
+				levelGoal = 18;
 			}
 			
 			else if (level === 3) {
@@ -336,6 +345,7 @@
 			
 			levelCompleteScreen.style.display = "block";
 			mango.style.display = "none";
+			coconut.style.display = "none";
 			gameRunning = false;
 		}
 		
@@ -362,6 +372,7 @@
 			
 			mango.style.display = "block";
 			resetMango();
+			resetCoconut();
 			
 			gameRunning = true;
 			requestAnimationFrame(gameLoop);
@@ -387,6 +398,17 @@
 			
 			mango.style.left = mangoX + "px";
 			mango.style.top = mangoY + "px";
+		}
+		
+		// ====================
+		// Coconut Movement
+		// ====================
+		function resetCoconut() {
+			coconutY = -300;
+			coconutX = Math.random() * (window.innerWidth - coconut.offsetWidth);
+			
+			coconut.style.left = coconutX + "px";
+			coconut.style.top = coconutY + "px";
 		}
 		
 		// ====================
@@ -444,6 +466,13 @@
 			mango.style.left = mangoX + "px";
 			mango.style.top = mangoY + "px";
 			
+			if (level === 3) {
+				coconutY += fallSpeed;
+				
+				coconut.style.left = coconutX + "px";
+				coconut.style.top = coconutY + "px";
+			}
+			
 			if (mangoY > window.innerHeight) 
 			{
 				resetMango();
@@ -473,6 +502,25 @@
 						levelComplete();
 						return;
 					}
+				}
+			}
+			
+			if (level === 3) {
+				if (coconutY + coconut.offsetHeight >= window.innerHeight - basket.offsetHeight + catchHeight) {
+					if (coconutX + coconut.offsetWidth >= catchLeft && coconutX <= catchRight) {
+						lives--;
+						updateLives();
+						resetCoconut();
+						
+						if (lives <= 0) {
+							gameOver();
+							return;
+						}
+					}
+				}
+				
+				if (coconutY > window.innerHeight) {
+					resetCoconut();
 				}
 			}
 			
