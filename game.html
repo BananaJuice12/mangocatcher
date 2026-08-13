@@ -154,6 +154,7 @@
 		let mangoX = Math.random() * (window.innerWidth - mango.offsetWidth);
 		let mangoY = 0;
 		let fallSpeed = 5;
+		let currentFruit = "mango";
 		
 		// ====================
 		// Coconut movement
@@ -167,7 +168,7 @@
 		let score = 0;
 		let level = 1;
 		let maxLevel = 10;
-		let levelGoal = 20;
+		let levelGoal;
 		
 		// ====================
 		// Lives system
@@ -244,7 +245,7 @@
 			gameOverScreen.style.display = "none";
 			levelCompleteScreen.style.display = "none";
 			gameWonScreen.style.display = "none";
-			mango.style.display = "block";
+			showCurrentFruit();
 			
 			gameRunning = true;
 			
@@ -272,10 +273,47 @@
 		}
 		
 		// ====================
+		// Fruit Functions
+		// ====================
+		function chooseFruit() {
+			if (level === 3) {
+				if (Math.random() < 0.75) {
+					currentFruit = "mango";
+				} else {
+					currentFruit = "coconut";
+				}
+			} else {
+					currentFruit = "mango";
+			}
+		}
+		
+		function showCurrentFruit() {
+			if (currentFruit === "mango") {
+				mango.style.display = "block";
+				coconut.style.display = "none";
+			} else {
+				mango.style.display = "none";
+				coconut.style.display = "block";
+			}
+		}
+		
+		function startNewFruit() {
+			chooseFruit();
+			showCurrentFruit();
+			
+			if (currentFruit === "mango") {
+				resetMango();
+			} else {
+				resetCoconut();
+			}
+		}
+		
+		// ====================
 		// Levels
 		// ====================
 		function setupLevel() {
-			coconut.style.display = "none";
+			chooseFruit();
+			showCurrentFruit();
 			
 			if (level === 1) {
 				fallSpeed = 5;
@@ -293,7 +331,6 @@
 				fallSpeed = 8;
 				speed = 13;
 				levelGoal = 25;
-				coconut.style.display = "block";
 			}
 			
 			else if (level === 4) {
@@ -369,7 +406,7 @@
 			
 			levelCompleteScreen.style.display = "none";
 			
-			mango.style.display = "block";
+			showCurrentFruit();
 			resetMango();
 			resetCoconut();
 			
@@ -403,7 +440,7 @@
 		// Coconut Movement
 		// ====================
 		function resetCoconut() {
-			coconutY = -300;
+			coconutY = 0;
 			coconutX = Math.random() * (window.innerWidth - coconut.offsetWidth);
 			
 			coconut.style.left = coconutX + "px";
@@ -460,12 +497,14 @@
 			catchLeft = basketPosition + basketPadding;
 			catchRight = basketPosition + basket.offsetWidth - basketPadding;
 			
+			if (currentFruit === "mango") {
 			mangoY += fallSpeed;
 			
 			mango.style.left = mangoX + "px";
 			mango.style.top = mangoY + "px";
+			}
 			
-			if (level === 3) {
+			if (level === 3 && currentFruit === "coconut") {
 				coconutY += fallSpeed;
 				
 				coconut.style.left = coconutX + "px";
@@ -474,52 +513,49 @@
 			
 			if (mangoY > window.innerHeight) 
 			{
-				resetMango();
-				
 				lives--;
 				updateLives();
 				
 				if (lives <= 0) {
 					gameOver();
+					return;
 				}
+				
+				startNewFruit();
 			}
 			
 			if (mangoY + mango.offsetHeight >= window.innerHeight - basket.offsetHeight + catchHeight) {
-				
 				if (mangoX + mango.offsetWidth >= catchLeft && mangoX <= catchRight) 
 				{
-					resetMango();
-					
 					score++;
-					
-					// ====================
-					// Level completion
-					// ====================
 					updateScore();
 					
 					if (score >= levelGoal) {
 						levelComplete();
 						return;
 					}
+					
+					startNewFruit();
 				}
 			}
 			
-			if (level === 3) {
+			if (level === 3 && currentFruit === "coconut") {
 				if (coconutY + coconut.offsetHeight >= window.innerHeight - basket.offsetHeight + catchHeight) {
 					if (coconutX + coconut.offsetWidth >= catchLeft && coconutX <= catchRight) {
 						lives--;
 						updateLives();
-						resetCoconut();
 						
 						if (lives <= 0) {
 							gameOver();
 							return;
 						}
+						
+						startNewFruit();
 					}
 				}
 				
 				if (coconutY > window.innerHeight) {
-					resetCoconut();
+					startNewFruit();
 				}
 			}
 			
